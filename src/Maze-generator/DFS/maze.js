@@ -44,8 +44,6 @@ export default class Maze extends Component {
       let currentCell = stack.pop();
       currCell = currentCell;
       if (!visited.has(currentCell)) {
-        console.log(this.state);
-        console.log("Visiting cell: " + currentCell);
         let cellToModify = document.getElementById(currentCell);
         cellToModify.classList.remove("untouched-cell");
         cellToModify.className += " touched-cell";
@@ -72,7 +70,7 @@ export default class Maze extends Component {
         }
 
         // explore the possible neighbors
-        this.getNeighbors(row, col).forEach(neighbor => {
+        this.shuffleArray(this.getNeighbors(row, col)).forEach(neighbor => {
           if (this.validNeighbor(neighbor, visited)) {
             let coordinates = this.convertToId(neighbor);
             stack.push(coordinates);
@@ -106,28 +104,14 @@ export default class Maze extends Component {
 
   getNeighbors(row, col) {
     let top = [row - 1, col];
-    // let topRight = [row - 1, col + 1];
     let right = [row, col + 1];
-    // let bottomRight = [row + 1, col + 1];
     let bottom = [row + 1, col];
-    // let bottomLeft = [row + 1, col - 1];
     let left = [row, col - 1];
-    // let topLeft = [row - 1, col - 1];
-    return [
-      top,
-      //topRight,
-      right,
-      //bottomRight,
-      bottom,
-      //bottomLeft,
-      left
-      //topLeft
-    ];
+    return [top, right, bottom, left];
   }
 
   // Find out which wall to break down
   breakWall(row, col, neighbor, currCell, neighborCell) {
-    console.log(neighbor);
     // top wall?
     if (row - 1 === neighbor[0] && col === neighbor[1]) {
       currCell.style.borderTop = "0";
@@ -137,7 +121,6 @@ export default class Maze extends Component {
     // right wall?
     else if (row === neighbor[0] && col + 1 === neighbor[1]) {
       currCell.style.borderRight = "0";
-
       neighborCell.style.borderLeft = "0";
     }
 

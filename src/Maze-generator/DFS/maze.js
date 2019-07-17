@@ -1,3 +1,9 @@
+/**
+ * @author Michael Wilson
+ * @description Just a fun little project that I decided to tackle after work.
+ * @version 1.0.1
+ */
+
 import React, { Component } from "react";
 import "./maze.css";
 var prevCell = "";
@@ -17,6 +23,11 @@ export default class Maze extends Component {
     this.breakWall = this.breakWall.bind(this);
   }
 
+  /**
+   * @method generateGrid
+   *
+   * @description Creates an MxN grid.
+   */
   generateGrid() {
     let rows = [];
     for (var row = 0; row < this.state.height; row++) {
@@ -35,6 +46,11 @@ export default class Maze extends Component {
     return rows;
   }
 
+  /**
+   * @method generateMaze
+   *
+   * @description Utilizes DFS to generate a maze.
+   */
   generateMaze() {
     var start = "(0,0)";
     let visited = new Set();
@@ -81,16 +97,31 @@ export default class Maze extends Component {
     }
   }
 
+  /**
+   * @method validNeighbor
+   *
+   * @description Checks to see if the neighbor is unvisited and within the bounds of the graph.
+   *
+   * @param {int[]} neighbor
+   * @param {Set} visitedSet
+   */
   validNeighbor(neighbor, visitedSet) {
     return (
       !visitedSet.has(this.convertToId(neighbor)) &&
-      neighbor[0] < 10 &&
+      neighbor[0] < this.state.height &&
       neighbor[0] >= 0 &&
-      neighbor[1] < 10 &&
+      neighbor[1] < this.state.width &&
       neighbor[1] >= 0
     );
   }
 
+  /**
+   * @method parseLocation
+   *
+   * @description Converts a string of coordinates to the numeric value.
+   *
+   * @param {string} stringCoordinates
+   */
   parseLocation(stringCoordinates) {
     let values = stringCoordinates.split(",");
     let row = parseInt(values[0].replace(/[^\d]/, ""));
@@ -98,10 +129,25 @@ export default class Maze extends Component {
     return [row, col];
   }
 
+  /**
+   * @method convertToId
+   *
+   * @description Converts a pair of coordinates to the appropriate ID.
+   *
+   * @param {coordinates} numbericCoordinates
+   */
   convertToId(numbericCoordinates) {
     return "(" + numbericCoordinates[0] + "," + numbericCoordinates[1] + ")";
   }
 
+  /**
+   * @method getNeighbors
+   *
+   * @description Gets the corresponding neighbors to the current cell.
+   *
+   * @param {int} row
+   * @param {int} col
+   */
   getNeighbors(row, col) {
     let top = [row - 1, col];
     let right = [row, col + 1];
@@ -110,7 +156,17 @@ export default class Maze extends Component {
     return [top, right, bottom, left];
   }
 
-  // Find out which wall to break down
+  /**
+   * @method breakWall
+   *
+   * @description Notes the previous direction to the current cell and breaks down the appropriate wall.
+   *
+   * @param {int} row
+   * @param {int} col
+   * @param {coordinates} neighbor
+   * @param {HTMLTableCellElement} currCell
+   * @param {HTMLTableCellElement} neighborCell
+   */
   breakWall(row, col, neighbor, currCell, neighborCell) {
     // top wall?
     if (row - 1 === neighbor[0] && col === neighbor[1]) {

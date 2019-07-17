@@ -1,0 +1,19 @@
+.container {
+  text-align: center;
+  margin: auto;
+}
+
+.cell {
+  height: 25px;
+  width: 25px;
+}
+
+.untouched-cell {
+  color: black;
+  border: 1px solid black;
+}
+
+.touched-cell {
+  color: magenta;
+  border: 1px solid magenta;
+}
